@@ -140,3 +140,139 @@ export async function listSequences() {
 
 	return res.json();
 }
+
+export async function openDome(domeId: string, safetyOverride = false) {
+	const headers: Record<string, string> = {};
+
+	if (safetyOverride) {
+		headers['x-safety-override'] = 'true';
+	}
+
+	const res = await fetch(`${PUBLIC_API_BASE}/dome/${encodeURIComponent(domeId)}/open`, {
+		method: 'POST',
+		headers
+	});
+
+	if (!res.ok) {
+		throw new Error(`Dome open failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}
+
+export async function closeDome(domeId: string, safetyOverride = false) {
+	const headers: Record<string, string> = {};
+
+	if (safetyOverride) {
+		headers['x-safety-override'] = 'true';
+	}
+
+	const res = await fetch(`${PUBLIC_API_BASE}/dome/${encodeURIComponent(domeId)}/close`, {
+		method: 'POST',
+		headers
+	});
+
+	if (!res.ok) {
+		throw new Error(`Dome close failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}
+
+export async function openCover(coverId: string, safetyOverride = false) {
+	const headers: Record<string, string> = {};
+
+	if (safetyOverride) {
+		headers['x-safety-override'] = 'true';
+	}
+
+	const res = await fetch(`${PUBLIC_API_BASE}/cover/${encodeURIComponent(coverId)}/open`, {
+		method: 'POST',
+		headers
+	});
+
+	if (!res.ok) {
+		throw new Error(`Cover open failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}
+
+export async function closeCover(coverId: string, safetyOverride = false) {
+	const headers: Record<string, string> = {};
+
+	if (safetyOverride) {
+		headers['x-safety-override'] = 'true';
+	}
+
+	const res = await fetch(`${PUBLIC_API_BASE}/cover/${encodeURIComponent(coverId)}/close`, {
+		method: 'POST',
+		headers
+	});
+
+	if (!res.ok) {
+		throw new Error(`Cover close failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}
+
+export async function turnCalibratorOn(coverId: string, brightness: number) {
+	const res = await fetch(
+		`${PUBLIC_API_BASE}/cover/${encodeURIComponent(coverId)}/calibrator/on/${brightness}`,
+		{
+			method: 'POST'
+		}
+	);
+
+	if (!res.ok) {
+		throw new Error(`Calibrator on failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}
+
+export async function turnCalibratorOff(coverId: string) {
+	const res = await fetch(`${PUBLIC_API_BASE}/cover/${encodeURIComponent(coverId)}/calibrator/off`, {
+		method: 'POST'
+	});
+
+	if (!res.ok) {
+		throw new Error(`Calibrator off failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}
+
+export type SwitchControl = {
+	number: number;
+	name: string;
+	description?: string | null;
+	can_write?: boolean;
+	state?: boolean;
+};
+
+export async function getSwitchControls(switchId: string) {
+	const res = await fetch(`${PUBLIC_API_BASE}/switch/${encodeURIComponent(switchId)}/controls`);
+
+	if (!res.ok) {
+		throw new Error(`Switch controls failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json();
+}
+
+export async function setSwitchControl(switchId: string, switchNumber: number, setting: number) {
+	const res = await fetch(
+		`${PUBLIC_API_BASE}/switch/${encodeURIComponent(switchId)}/${switchNumber}/${setting}`,
+		{
+			method: 'POST'
+		}
+	);
+
+	if (!res.ok) {
+		throw new Error(`Switch set failed: ${res.status} ${res.statusText}`);
+	}
+
+	return res.json().catch(() => null);
+}

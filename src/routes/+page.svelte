@@ -5,6 +5,9 @@
     import GenericDeviceBlock from '$lib/components/devices/GenericDeviceBlock.svelte';
     import FilterWheelBlock from '$lib/components/devices/FilterWheelBlock.svelte';
     import SequencePanel from '$lib/components/sequences/SequencePanel.svelte';
+    import DomeBlock from '$lib/components/devices/DomeBlock.svelte';
+    import CoverBlock from '$lib/components/devices/CoverBlock.svelte';
+    import SwitchBlock from '$lib/components/devices/SwitchBlock.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -175,6 +178,12 @@ let liveSequences = $state<Record<string, ActiveSequence>>({});
                     {#each mergedDevices as device}
                         {#if device.type === 'filterwheel'}
                             <FilterWheelBlock {device} onLifecycleComplete={handleLifecycleComplete} />
+                        {:else if device.type === 'dome'}
+                            <DomeBlock {device} onLifecycleComplete={handleLifecycleComplete} />
+                        {:else if device.type === 'cover'}
+                            <CoverBlock {device} onLifecycleComplete={handleLifecycleComplete} />
+                        {:else if device.type === 'switch'}
+                            <SwitchBlock {device} onLifecycleComplete={handleLifecycleComplete} />
                         {:else}
                             <GenericDeviceBlock {device} onLifecycleComplete={handleLifecycleComplete} />
                         {/if}
